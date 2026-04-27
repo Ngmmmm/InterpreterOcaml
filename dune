@@ -1,5 +1,6 @@
 (executable
 	 (name dessin)
+   (name arbre)
 	 (libraries graphics))
 (ocamllex (modules lexer))
 (menhir
