@@ -8,6 +8,9 @@
 %token GPAREN DPAREN
 %token PV
 %token EOF
+%token COULEUR_PINCEAU LARGEUR_PINCEAU
+%token NOIR ROUGE BLEU VERT JAUNE
+%token <string> HEXCODE
 
 %left PLUS MOINS
 %left FOIS DIV
@@ -28,6 +31,16 @@ commande:
   | LEVER_PINCEAU { LeverPinceau }
   | AVANCER e = expression { Avancer e }
   | TOURNER e = expression { Tourner e }
+  | COULEUR_PINCEAU c = couleur { CouleurPinceau c }
+  | LARGEUR_PINCEAU e = expression { LargeurPinceau e }
+
+couleur:
+  | NOIR { Noir }
+  | ROUGE { Rouge }
+  | BLEU { Bleu }
+  | VERT { Vert }
+  | JAUNE { Jaune }
+  | h = HEXCODE { Hex h }
 
 expression:
   | n = NOMBRE { Nombre n }
