@@ -1,38 +1,37 @@
-(* Ce fichier contient une brève démo de la bibliothèque Graphics d'OCaml.
- * Il n'est pas utile de le conserver dans la version finale du projet.
- *
- * Voir la doc de la bibliothèque Graphics pour plus de détails
- * https://ocaml.org/manual/4.07/libref/Graphics.html
- *)
+(* dessin.ml *)
 open Graphics
 
 let () =
-  (* Ouverture d'une fenêtre graphique *)
-  open_graph " 800x800"; (* Attention à l'espace au début *)
-  set_window_title "Exemple d'utilisation de Graphics";
+  (* 1. Vérification des arguments (nom du fichier .txt) *)
+  if Array.length Sys.argv < 2 then (
+    print_endline "Usage: dune exec ./dessin.exe -- <fichier_test.txt>";
+    exit 1
+  );
 
-  (* Taille et couleur du trait. *)
-  set_line_width 5;
-  set_color blue;
+  let filename = Sys.argv.(1) in
+  let chan = open_in filename in
+  let lexbuf = Lexing.from_channel chan in
 
-  (* Déplace le curseur aux coordonnées (400, 400) sans dessiner *)
-  moveto 400 400;
+  try
+    (* 2. Appel du Parser et du Lexer pour créer l'AST *)
+    let ast = Parser.main Lexer.token lexbuf in
+    close_in chan;
 
-  (* Trace trois lignes en coordonnées absolues avec [Graphics.lineto] *)
-  lineto 600 300;
-  lineto 500 500;
-  lineto 200 400;
+    (* 3. Initialisation de la fenêtre Graphics selon le sujet [cite: 58] *)
+    open_graph " 800x800";
+    moveto 400 400; (* Centre du canevas [cite: 58] *)
 
-  (* Trace une ligne de longueur 100 et d'angle 45 degrés,
-   * en coordonnées relatives avec [Graphics.rlineto]
-   *)
-  set_color red;
-  let angle = 45. *. Float.pi /. 180. in (* angle en radians *)
-  let distance = 100. in
-  let dx = int_of_float (distance *. cos angle) in
-  let dy = int_of_float (distance *. sin angle) in
-  rlineto dx dy;
+    (* 4. Appel de l'interpréteur (le code que tu as déplacé dans interp.ml) *)
+    Interp.interpreter ast;
 
-  (* Attend l'appui d'une touche et ferme la fenêtre *)
-  ignore(read_key ());
-  close_graph ()
+    (* 5. Attente pour voir le dessin *)
+    print_endline "Dessin terminé. Appuyez sur une touche pour quitter.";
+    ignore (wait_next_event [Key_pressed])
+  with
+  | Parser.Error ->
+      Printf.fprintf stderr "Erreur de syntaxe à la ligne %d\n" 
+        lexbuf.lex_curr_p.pos_lnum;
+      exit 1
+  | Failure msg ->
+      Printf.fprintf stderr "Erreur d'exécution : %s\n" msg;
+      exit 1
