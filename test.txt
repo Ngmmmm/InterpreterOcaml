@@ -1,0 +1,33 @@
+Couleur Pinceau rouge;
+Largeur Pinceau (10 + 5);
+Baisser Pinceau;
+Avancer 100; Tourner 90;
+Avancer 100; Tourner 90;
+Avancer 100; Tourner 90;
+Avancer 100; Tourner 90;
+Lever Pinceau;
+
+Tourner 45;
+Avancer 150;
+Couleur Pinceau 0000FF;
+Largeur Pinceau 2;
+Baisser Pinceau;
+Avancer 50;
+Tourner 120;
+Avancer 50;
+Tourner 120;
+Avancer 50;
+Lever Pinceau;
+
+Couleur Pinceau jaune;
+Largeur Pinceau (20 / 4);
+Avancer (10 * 5);
+Baisser Pinceau;
+Tourner -90;
+Avancer 100;
+Lever Pinceau;
+
+Couleur Pinceau vert;
+Avancer 600;
+Baisser Pinceau;
+Avancer 100;
