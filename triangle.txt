@@ -1,0 +1,10 @@
+Couleur Pinceau vert ;
+Largeur Pinceau 5;
+Baisser Pinceau ;
+Avancer 50;
+Tourner 120;
+Couleur Pinceau bleu ;
+Avancer 50;
+Tourner 120;
+Couleur Pinceau FF1493 ;
+Avancer 50;
