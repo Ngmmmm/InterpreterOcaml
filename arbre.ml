@@ -1,5 +1,6 @@
 type expr =
   | Nombre of int
+  | Id for string
   | Add of expr * expr
   | Sub of expr * expr
   | Mul of expr * expr
@@ -20,5 +21,8 @@ type instruction =
   | Tourner of expr
   | CouleurPinceau of couleur
   | LargeurPinceau of expr
+  | VarDecl of string 
+  | VarInit of string * expr
+  | Affectation of string * expr
 
 type programme = instruction list
