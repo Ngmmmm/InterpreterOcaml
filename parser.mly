@@ -35,7 +35,7 @@ commande:
   | TOURNER e = expression { Tourner e }
   | COULEUR_PINCEAU c = couleur { CouleurPinceau c }
   | LARGEUR_PINCEAU e = expression { LargeurPinceau e }
-  | VAR i - ID { VarDecl i }
+  | VAR i = ID { VarDecl i }
   | VAR i = ID EGAL e = expression { VarInit(i, e) } 
   | i = ID EGAL e = expression { Affectation(i, e) }
 
@@ -49,7 +49,7 @@ couleur:
 
 expression:
   | n = NOMBRE { Nombre n }
-  | i = ID { Id i }
+  | i = ID { Var i }
   | GPAREN e = expression DPAREN { e }
   | e1 = expression PLUS e2 = expression { Add(e1, e2) }
   | e1 = expression MOINS e2 = expression { Sub(e1, e2) }

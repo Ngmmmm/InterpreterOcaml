@@ -1,0 +1,54 @@
+Var distance = 20;
+Var angle = 90;
+
+Largeur Pinceau 4;
+Baisser Pinceau;
+
+Couleur Pinceau FF0055;
+Avancer distance; 
+Tourner angle;
+distance = distance + 30;
+
+Couleur Pinceau FF00AA;
+Avancer distance; 
+Tourner angle;
+distance = distance + 30;
+
+Couleur Pinceau CC00FF;
+Avancer distance; 
+Tourner angle;
+distance = distance + 30;
+
+Couleur Pinceau 5500FF;
+Avancer distance; 
+Tourner angle;
+distance = distance + 30;
+
+Couleur Pinceau 0055FF;
+Avancer distance; 
+Tourner angle;
+distance = distance + 30;
+
+Couleur Pinceau 00CCFF;
+Avancer distance; 
+Tourner angle;
+distance = distance + 30;
+
+Couleur Pinceau 00FFCC;
+Avancer distance; 
+Tourner angle;
+distance = distance + 30;
+
+Couleur Pinceau 00FF55;
+Avancer distance; 
+Tourner angle;
+distance = distance + 30;
+
+Couleur Pinceau A8FF00;
+Avancer distance; 
+Tourner angle;
+distance = distance + 30;
+
+Couleur Pinceau FFCC00;
+Avancer distance; 
+Tourner angle;
