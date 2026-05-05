@@ -10,15 +10,27 @@ let epaisseur_actuelle = ref 1
 
 let deg_to_rad d = d *. (Stdlib.acos (-1.0) /. 180.0)
 
-let rec eval_expr = function
-  | Nombre n -> n
-  | Add(e1, e2) -> eval_expr e1 + eval_expr e2
-  | Sub(e1, e2) -> eval_expr e1 - eval_expr e2
-  | Mul(e1, e2) -> eval_expr e1 * eval_expr e2
+
+type etat_var =
+  | NonInit
+  | Init of float
+
+type env = (string * etat_var) list
+let env_initial : env = []
+
+let rec eval_expr env = function
+  | Nombre n -> float_of_int n
+  | Var i ->
+      (match List.assoc i env with
+       | Init v -> v
+       | NonInit -> failwith ("Variable non initialisée : " ^ i))
+  | Add(e1, e2) -> eval_expr env e1 +. eval_expr env e2
+  | Sub(e1, e2) -> eval_expr env e1 -. eval_expr env e2
+  | Mul(e1, e2) -> eval_expr env e1 *. eval_expr env e2
   | Div(e1, e2) -> 
-      let v2 = eval_expr e2 in
-      if v2 = 0 then failwith "Erreur : Division par zéro !"
-      else eval_expr e1 / v2
+      let v2 = eval_expr env e2 in
+      if v2 = 0.0 then failwith "Erreur : Division par zéro !"
+      else eval_expr env e1 /. v2
 
 let col_to_graphics = function
   | Noir -> Graphics.black
@@ -28,17 +40,21 @@ let col_to_graphics = function
   | Jaune -> Graphics.yellow
   | Hex h -> int_of_string ("0x" ^ h)
 
-let execute inst =
+let execute env inst =
   match inst with
-  | BaisserPinceau -> pinceau_baisse := true 
-  | LeverPinceau -> pinceau_baisse := false 
+  | BaisserPinceau -> pinceau_baisse := true; env
+  | LeverPinceau -> pinceau_baisse := false; env
   | Tourner e -> 
-      let a = float_of_int (eval_expr e) in
-      angle := !angle +. a 
+      let a = eval_expr env e in
+      angle := !angle +. a;
+      env
   | Avancer e ->
-      let d = float_of_int (eval_expr e) in
+      let d = eval_expr env e in
       let new_x = !x +. d *. cos (deg_to_rad !angle) in
       let new_y = !y +. d *. sin (deg_to_rad !angle) in
+
+      if !x < 0. || !x > 800. || !y < 0. || !y > 800. then
+        print_endline "Attention : Le curseur est sorti de l'écran !";
       
       if !pinceau_baisse then
         lineto (int_of_float new_x) (int_of_float new_y) 
@@ -47,18 +63,40 @@ let execute inst =
       
       x := new_x;
       y := new_y;
-      if !x < 0. || !x > 800. || !y < 0. || !y > 800. then
-        print_endline "Attention : Le curseur est sorti de l'écran !"
+      env
   | CouleurPinceau c -> 
       couleur_actuelle := col_to_graphics c;
-      Graphics.set_color !couleur_actuelle
+      Graphics.set_color !couleur_actuelle;
+      env
   | LargeurPinceau e -> 
-      let ep = eval_expr e in
-      if ep < 1 then failwith "Erreur : L'épaisseur doit être au moins de 1"
+      let ep = eval_expr env e in
+      if ep < 1.0 then failwith "Erreur : L'épaisseur doit être au moins de 1"
       else (
-        epaisseur_actuelle := ep;
+        epaisseur_actuelle := int_of_float(ep);
         Graphics.set_line_width !epaisseur_actuelle
       )
+      ; env
+  | VarDecl nom ->
+      if List.mem_assoc nom env then
+        failwith ("Erreur : Variable '" ^ nom ^ "' déjà déclarée.")
+      else
+        (nom, NonInit) :: env
+
+  | VarInit (nom, expr) ->
+      if List.mem_assoc nom env then
+        failwith ("Erreur : Variable '" ^ nom ^ "' déjà déclarée.")
+      else
+        let valeur = eval_expr env expr in
+        (nom, Init valeur) :: env
+
+  | Affectation (nom, expr) ->
+      if not (List.mem_assoc nom env) then
+        failwith ("Erreur : Variable '" ^ nom ^ "' non déclarée.")
+      else
+        let valeur = eval_expr env expr in
+        let env_clean = List.remove_assoc nom env in
+        (nom, Init valeur) :: env_clean
 
 let interpreter programme =
-  List.iter execute programme
+  let _environnement_final = List.fold_left execute env_initial programme in
+  ()

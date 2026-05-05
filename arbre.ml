@@ -1,6 +1,6 @@
 type expr =
   | Nombre of int
-  | Id for string
+  | Var of string
   | Add of expr * expr
   | Sub of expr * expr
   | Mul of expr * expr
