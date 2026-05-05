@@ -17,11 +17,11 @@ let () =
     let ast = Parser.main Lexer.token lexbuf in
     close_in chan;
 
-    (* 3. Initialisation de la fenêtre Graphics selon le sujet [cite: 58] *)
+    (* 3. Initialisation de la fenêtre Graphics *)
     open_graph " 800x800";
-    moveto 400 400; (* Centre du canevas [cite: 58] *)
+    moveto 400 400;
 
-    (* 4. Appel de l'interpréteur (le code que tu as déplacé dans interp.ml) *)
+    (* 4. Appel de l'interpréteur*)
     Interp.interpreter ast;
 
     (* 5. Attente pour voir le dessin *)
