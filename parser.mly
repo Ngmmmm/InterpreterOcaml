@@ -10,12 +10,17 @@
 %token EOF
 %token COULEUR_PINCEAU LARGEUR_PINCEAU
 %token NOIR ROUGE BLEU VERT JAUNE
+%token SI ALORS SINON TANTQUE FAIRE REPETER FOIS DEBUT FIN
+%token EQUAL_COMP DIFF INF SUP INFEGAL SUPEGAL AND OR NOT
 %token <string> HEXCODE
 %token VAR EGAL
 %token <string> ID
 
 %left PLUS MOINS
 %left FOIS DIV
+%left OR
+%left AND
+%nonassoc NOT
 
 %start<Arbre.programme> main
 
