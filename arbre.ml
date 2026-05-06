@@ -38,5 +38,9 @@ type instruction =
   | VarDecl of string 
   | VarInit of string * expr
   | Affectation of string * expr
+  | Si of condition * instruction list * instruction list
+  | TantQue of condition * instruction list
+  | Repeter of expr * instruction list
+  | Bloc of instruction list
 
 type programme = instruction list
