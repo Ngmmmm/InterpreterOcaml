@@ -14,6 +14,20 @@ type couleur =
   | Jaune
   | Hex of string
 
+type comparaison =
+  | Egal
+  | Diff
+  | Inferieur
+  | Superieur
+  | InfEgal
+  | SupEgal
+
+type condition = 
+  | Comp of comparaison * expr * expr
+  | Not of condition
+  | And of condition * condition
+  | Or of condition * condition
+
 type instruction =
   | BaisserPinceau
   | LeverPinceau

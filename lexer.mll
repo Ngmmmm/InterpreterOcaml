@@ -25,7 +25,6 @@ rule token = parse
   | "Couleur Pinceau" { COULEUR_PINCEAU }
   | "Largeur Pinceau" { LARGEUR_PINCEAU }
   | "Var" { VAR }
-  | '=' { EGAL }
   | "noir" { NOIR }
   | "rouge" { ROUGE }
   | "bleu" { BLEU }
@@ -38,6 +37,24 @@ rule token = parse
   | "Tourner" { TOURNER }
   | nombre as n { NOMBRE (int_of_string n) }
   | identifiant as id { ID id }
+  | "Si"     { SI }
+  | "Alors"  { ALORS }
+  | "Sinon"  { SINON }
+  | "Tant que" { TANTQUE }
+  | "Faire"  { FAIRE }
+  | "Repeter" { REPETER }
+  | "Fois"   { FOIS }
+  | "Debut"  { DEBUT }
+  | "Fin"    { FIN }
+  | "=="     { EQUAL_COMP }
+  | "!="     { DIFF }
+  | "<"      { INF }
+  | ">"      { SUP }
+  | "<="     { INFEGAL }
+  | ">="     { SUPEGAL }
+  | "&&"     { AND }
+  | "||"     { OR }
+  | "!"      { NOT }
   | '+' { PLUS }
   | '-' { MOINS }
   | '*' { FOIS }
