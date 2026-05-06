@@ -16,6 +16,9 @@
 %token VAR EGAL
 %token <string> ID
 
+%nonassoc low_prec
+%nonassoc SINON
+
 %left PLUS MOINS
 %left FOIS DIV
 %left OR
@@ -43,6 +46,13 @@ commande:
   | VAR i = ID { VarDecl i }
   | VAR i = ID EGAL e = expression { VarInit(i, e) } 
   | i = ID EGAL e = expression { Affectation(i, e) }
+  | SI c = condition ALORS i1 = bloc_ou_inst %prec low_prec
+      { Si(c, i1, []) }
+  | SI c = condition ALORS i1 = bloc_ou_inst SINON i2 = bloc_ou_inst
+      { Si(c, i1, i2) }
+  | TANTQUE c = condition FAIRE i = bloc_ou_inst
+      { TantQue(c, i) }
+  | DEBUT l = suite_instructions FIN { Bloc l }
 
 couleur:
   | NOIR { Noir }
