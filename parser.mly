@@ -52,7 +52,9 @@ commande:
       { Si(c, i1, i2) }
   | TANTQUE c = condition FAIRE i = bloc_ou_inst
       { TantQue(c, i) }
-  | DEBUT l = suite_instructions FIN { Bloc l }
+  | REPETER e = expression FOIS i = bloc_ou_inst (* Ajout Repeter *)
+      { Repeter(e, i) }
+  | DEBUT l = bloc_commandes FIN { Bloc l }
 
 couleur:
   | NOIR { Noir }
@@ -61,6 +63,21 @@ couleur:
   | VERT { Vert }
   | JAUNE { Jaune }
   | h = HEXCODE { Hex h }
+
+bloc_ou_inst:
+  | i = commande { [i] }
+  | DEBUT l = bloc_commandes FIN { l }
+
+condition:
+  | e1 = expression EQUAL_COMP e2 = expression { Comp(Egal, e1, e2) }| e1 = expression DIFF e2 = expression       { Comp(Diff, e1, e2) }
+  | e1 = expression INF e2 = expression        { Comp(Inferieur, e1, e2) }
+  | e1 = expression SUP e2 = expression        { Comp(Superieur, e1, e2) }
+  | e1 = expression INFEGAL e2 = expression     { Comp(InfEgal, e1, e2) }
+  | e1 = expression SUPEGAL e2 = expression     { Comp(SupEgal, e1, e2) }
+  | NOT c = condition { Not c }
+  | c1 = condition AND c2 = condition { And(c1, c2) }
+  | c1 = condition OR c2 = condition  { Or(c1, c2) }
+  | GPAREN c = condition DPAREN { c }
 
 expression:
   | n = NOMBRE { Nombre n }
