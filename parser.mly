@@ -15,6 +15,7 @@
 %token <string> HEXCODE
 %token VAR EGAL
 %token <string> ID
+%token VRAI FAUX
 
 %nonassoc low_prec
 %nonassoc SINON
@@ -68,6 +69,8 @@ bloc_ou_inst:
   | i = commande { [i] }
 
 condition:
+  | VRAI { Vrai }
+  | FAUX { Faux }
   | e1 = expression EQUAL_COMP e2 = expression { Comp(Egal, e1, e2) }| e1 = expression DIFF e2 = expression       { Comp(Diff, e1, e2) }
   | e1 = expression INF e2 = expression        { Comp(Inferieur, e1, e2) }
   | e1 = expression SUP e2 = expression        { Comp(Superieur, e1, e2) }
