@@ -11,9 +11,10 @@ let epaisseur_actuelle = ref 1
 let deg_to_rad d = d *. (Stdlib.acos (-1.0) /. 180.0)
 
 
-type etat_var =
-  | NonInit
-  | Init of float
+type etat_var = { 
+  mutable est_init : bool; 
+  mutable valeur : float 
+}
 
 type env = (string * etat_var) list
 let env_initial : env = []
@@ -21,9 +22,11 @@ let env_initial : env = []
 let rec eval_expr env = function
   | Nombre n -> float_of_int n
   | Var i ->
-      (match List.assoc i env with
-       | Init v -> v
-       | NonInit -> failwith ("Variable non initialisée : " ^ i))
+      (try 
+         let etat = List.assoc i env in
+         if etat.est_init then etat.valeur
+         else failwith ("Variable non initialisée : " ^ i)
+       with Not_found -> failwith ("Variable non déclarée : " ^ i))
   | Add(e1, e2) -> eval_expr env e1 +. eval_expr env e2
   | Sub(e1, e2) -> eval_expr env e1 -. eval_expr env e2
   | Mul(e1, e2) -> eval_expr env e1 *. eval_expr env e2
@@ -63,6 +66,7 @@ let rec execute env inst =
       env
   | Avancer e ->
       let d = eval_expr env e in
+      print_endline ("Avancer de : " ^ string_of_float d);
       let new_x = !x +. d *. cos (deg_to_rad !angle) in
       let new_y = !y +. d *. sin (deg_to_rad !angle) in
 
@@ -93,22 +97,24 @@ let rec execute env inst =
       if List.mem_assoc nom env then
         failwith ("Erreur : Variable '" ^ nom ^ "' déjà déclarée.")
       else
-        (nom, NonInit) :: env
+        (nom, { est_init = false; valeur = 0.0 }) :: env
 
   | VarInit (nom, expr) ->
       if List.mem_assoc nom env then
         failwith ("Erreur : Variable '" ^ nom ^ "' déjà déclarée.")
       else
         let valeur = eval_expr env expr in
-        (nom, Init valeur) :: env
+        (nom, { est_init = true; valeur } ) :: env
 
   | Affectation (nom, expr) ->
       if not (List.mem_assoc nom env) then
         failwith ("Erreur : Variable '" ^ nom ^ "' non déclarée.")
-      else
-        let valeur = eval_expr env expr in
-        let env_clean = List.remove_assoc nom env in
-        (nom, Init valeur) :: env_clean
+      else begin
+        let etat = List.assoc nom env in
+        etat.valeur <- eval_expr env expr;
+        etat.est_init <- true;
+        env
+      end
   | Bloc instructions ->
       let _env_local = List.fold_left execute env instructions in
       env
