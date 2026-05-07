@@ -4,7 +4,7 @@
 
 %token <int> NOMBRE
 %token BAISSER_PINCEAU LEVER_PINCEAU AVANCER TOURNER
-%token PLUS MOINS FOIS DIV
+%token PLUS MOINS MUL DIV
 %token GPAREN DPAREN
 %token PV
 %token EOF
@@ -20,7 +20,7 @@
 %nonassoc SINON
 
 %left PLUS MOINS
-%left FOIS DIV
+%left MUL DIV
 %left OR
 %left AND
 %nonassoc NOT
@@ -52,7 +52,7 @@ commande:
       { Si(c, i1, i2) }
   | TANTQUE c = condition FAIRE i = bloc_ou_inst
       { TantQue(c, i) }
-  | REPETER e = expression FOIS i = bloc_ou_inst (* Ajout Repeter *)
+  | REPETER e = expression FOIS i = bloc_ou_inst 
       { Repeter(e, i) }
   | DEBUT l = bloc_commandes FIN { Bloc l }
 
@@ -66,7 +66,6 @@ couleur:
 
 bloc_ou_inst:
   | i = commande { [i] }
-  | DEBUT l = bloc_commandes FIN { l }
 
 condition:
   | e1 = expression EQUAL_COMP e2 = expression { Comp(Egal, e1, e2) }| e1 = expression DIFF e2 = expression       { Comp(Diff, e1, e2) }
@@ -85,5 +84,5 @@ expression:
   | GPAREN e = expression DPAREN { e }
   | e1 = expression PLUS e2 = expression { Add(e1, e2) }
   | e1 = expression MOINS e2 = expression { Sub(e1, e2) }
-  | e1 = expression FOIS e2 = expression { Mul(e1, e2) }
+  | e1 = expression MUL e2 = expression { Mul(e1, e2) }
   | e1 = expression DIV e2 = expression { Div(e1, e2) }

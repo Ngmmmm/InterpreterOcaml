@@ -23,6 +23,8 @@ type comparaison =
   | SupEgal
 
 type condition = 
+  | Vrai
+  | Faux
   | Comp of comparaison * expr * expr
   | Not of condition
   | And of condition * condition
