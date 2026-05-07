@@ -1,0 +1,19 @@
+Var distance = 5;
+Var epaisseur = 1;
+Baisser Pinceau;
+
+Tant que distance < 400 Faire
+Debut
+    Si distance < 150 Alors 
+        Couleur Pinceau FF0000; 
+    Sinon 
+        Couleur Pinceau 00FF00; 
+
+    Si distance == 200 Alors
+        Largeur Pinceau 5;
+        
+    Avancer distance;
+    Tourner 91; 
+    
+    distance = distance + 3;
+Fin;
