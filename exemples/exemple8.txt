@@ -1,0 +1,43 @@
+Var longueur = 5;
+Var angle = 89;
+Var tours = 0;
+
+Baisser Pinceau;
+Largeur Pinceau 2;
+
+Tant que tours <= 120 Faire
+Debut
+    Si tours < 30 Alors
+    Debut
+        Couleur Pinceau FF0055;
+    Fin
+    Sinon
+    Debut
+        Si tours < 60 Alors
+        Debut
+            Couleur Pinceau 00FFCC;
+            Largeur Pinceau 3;
+        Fin
+        Sinon
+        Debut
+            Si tours < 90 Alors
+            Debut
+                Couleur Pinceau jaune;
+                Largeur Pinceau 4;
+            Fin
+            Sinon
+            Debut
+                Couleur Pinceau noir;
+                Largeur Pinceau 1;
+            Fin;
+        Fin;
+    Fin;
+     Repeter 2 Fois
+    Debut
+        Avancer longueur;
+        Tourner angle;
+    Fin;
+
+    longueur = longueur + 3;
+    tours = tours + 1;
+Fin;

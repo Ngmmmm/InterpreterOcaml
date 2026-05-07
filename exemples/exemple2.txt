@@ -1,0 +1,18 @@
+Var nbCarres = 12;
+Var taille = 150;
+Var angleRotation = 360 / nbCarres;
+
+Couleur Pinceau 0000FF;
+Largeur Pinceau 2;
+
+Repeter nbCarres Fois
+Debut
+    Baisser Pinceau;
+    Repeter 4 Fois
+    Debut
+        Avancer taille;
+        Tourner 90;
+    Fin;
+    Lever Pinceau;
+    Tourner angleRotation;
+Fin;

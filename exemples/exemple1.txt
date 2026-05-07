@@ -1,0 +1,15 @@
+Var cote = 200;
+Var segments = 10;
+Baisser Pinceau;
+
+Repeter 4 Fois
+Debut
+    Repeter segments Fois
+    Debut
+        Baisser Pinceau;
+        Avancer cote / (segments * 2);
+        Lever Pinceau;
+        Avancer cote / (segments * 2);
+    Fin;
+    Tourner 90;
+Fin;
