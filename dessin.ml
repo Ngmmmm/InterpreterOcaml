@@ -32,6 +32,8 @@ let () =
       Printf.fprintf stderr "Erreur de syntaxe à la ligne %d\n" 
         lexbuf.lex_curr_p.pos_lnum;
       exit 1
+  | Graphics.Graphic_failure _ ->
+      exit 0
   | Failure msg ->
       Printf.fprintf stderr "Erreur d'exécution : %s\n" msg;
       exit 1
