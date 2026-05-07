@@ -5,7 +5,7 @@ Baisser Pinceau;
 Tant que distance < 400 Faire
 Debut
     Si distance < 150 Alors 
-        Couleur Pinceau FF0000; 
+        Couleur Pinceau FF0000
     Sinon 
         Couleur Pinceau 00FF00; 
 

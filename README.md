@@ -49,3 +49,30 @@ Nous avons étendu le langage pour supporter la personnalisation du tracé :
 - **Noa** : Mise à jour du Lexer (gestion de l'hexadécimal) et du Parser pour intégrer les nouvelles instructions de style.  
 
 - **Marc** : Implémentation de la sémantique des couleurs et de l'épaisseur dans l'interpréteur. Conversion des types AST vers les fonctions natives de la bibliothèque Graphics.
+
+## Etape 3 :
+### Fonctionnalités réalisées :
+Nous avons étendu le langage pour lui permettre de mémoriser et manipuler des données:
+
+- **Var** : Il est possible de déclarer une variable `Var x;`, de l'initialiser `Var x = 10;` ou de modifier sa valeur plus tard `x = x + 5;`. 
+
+- **Gestion de l'Environnement** : Utilisation d'une liste d'association `string * etat_var list` pour stocker l'état des variables.
+
+- **Gestion des erreurs** : Vérification systématique que chaque variable utilisée est bien déclarée et initialisée avant usage.  
+
+### Répartition du travail :
+- **Noa** : Mise à jour du Lexer et du Parser pour intégrer la grammaire des variables et des affectations.  
+
+- **Marc** : Création de la logique de gestion d'environnement dans interp.ml (ajout, recherche et mise à jour dans la liste d'association).
+
+# Etape 4 :
+### Fonctionnalités réalisées :
+
+- **Blocs** : Introduction des blocs `Debut...Fin`. Les variables déclarées à l'intérieur d'un bloc sont locales : elles sont supprimées de l'environnement dès que l'on sort du bloc.
+
+- **Structures de Contrôle** : Ajout des boucles Tant que et Repeter ainsi que des conditions Si...Alors...Sinon
+
+### Répartition du travail :
+- **Noa** : Résolution des conflits de grammaire dans le Parser (ambiguïté du Sinon et des Debut/Fin). Support des expressions logiques (&&, ||, !).
+
+- **Marc** : Correction de la logique récursive dans `interp.ml` pour permettre aux variables d'évoluer au sein des boucles `Tant que` et `Repeter`.

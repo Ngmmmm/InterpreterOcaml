@@ -66,7 +66,6 @@ let rec execute env inst =
       env
   | Avancer e ->
       let d = eval_expr env e in
-      print_endline ("Avancer de : " ^ string_of_float d);
       let new_x = !x +. d *. cos (deg_to_rad !angle) in
       let new_y = !y +. d *. sin (deg_to_rad !angle) in
 
