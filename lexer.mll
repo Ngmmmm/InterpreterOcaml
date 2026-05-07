@@ -32,6 +32,8 @@ rule token = parse
   | "Lever Pinceau" { LEVER_PINCEAU }
   | "Avancer" { AVANCER }
   | "Tourner" { TOURNER }
+  | "vrai" { VRAI } 
+  | "faux" { FAUX }
   | "Si"     { SI }
   | "Alors"  { ALORS }
   | "Sinon"  { SINON }
